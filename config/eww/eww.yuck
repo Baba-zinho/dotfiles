@@ -1,0 +1,105 @@
+;; ~/.config/eww/eww.yuck — Panneau « Feels »
+;; Ouvrir / fermer : Meta+P, ou clic sur l'horloge de Waybar
+;; Déboguer : eww logs   ·   Recharger : eww reload
+
+;; ═════════════ Données ═════════════
+(defpoll heure    :interval "5s"  "date '+%H:%M'")
+(defpoll date_txt :interval "60s" "date '+%A %d %B'")
+(defpoll uptime   :interval "60s" "uptime -p | sed 's/^up //'")
+
+;; Son (LC_ALL=C : sortie de pactl en anglais, plus facile à lire)
+(defpoll volume :interval "1s"
+  "LC_ALL=C pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null | grep -o '[0-9]*%' | head -n1 | tr -d '%' || echo 0")
+(defpoll muet :interval "1s"
+  "LC_ALL=C pactl get-sink-mute @DEFAULT_SINK@ 2>/dev/null | grep -q yes && echo true || echo false")
+
+;; Luminosité (masquée s'il n'y a pas de rétroéclairage, ex. en VM ou sur un PC fixe)
+(defpoll a_lumi :interval "60s"
+  "ls /sys/class/backlight 2>/dev/null | grep -q . && echo true || echo false")
+(defpoll lumi :interval "2s"
+  "brightnessctl -m 2>/dev/null | cut -d, -f4 | tr -d '%' | grep . || echo 0")
+
+;; Musique (n'importe quel lecteur compatible MPRIS : Spotify, Firefox, mpv…)
+(deflisten musique :initial '{"statut":"","artiste":"","titre":""}'
+  "~/.config/eww/scripts/musique.sh")
+
+;; ═════════════ Fenêtre ═════════════
+(defwindow panneau
+  :monitor 0
+  :geometry (geometry :x "10px" :y "10px" :width "380px" :anchor "top right")
+  :stacking "overlay"
+  :exclusive false
+  :focusable false
+  :namespace "eww"
+  (panneau))
+
+;; ═════════════ Widgets ═════════════
+(defwidget panneau []
+  (box :class "panneau" :orientation "v" :space-evenly false :spacing 14
+    (entete)
+    (jauges)
+    (curseurs)
+    (musique-carte)
+    (alimentation)))
+
+(defwidget entete []
+  (box :class "entete" :orientation "v" :space-evenly false
+    (label :class "heure" :halign "start" :text heure)
+    (label :class "date"  :halign "start" :text date_txt)
+    (label :class "info"  :halign "start" :text "󰔟 allumé depuis ${uptime}")))
+
+(defwidget jauge [valeur icone classe titre]
+  (box :class "jauge ${classe}" :orientation "v" :space-evenly false :spacing 6
+    (circular-progress :class "cercle" :value valeur :thickness 6 :start-at 75
+                       :width 68 :height 68
+      (label :class "jauge-icone" :text icone))
+    (label :class "jauge-titre" :text "${titre} ${round(valeur, 0)}%")))
+
+(defwidget jauges []
+  (box :class "carte" :space-evenly true
+    (jauge :valeur {EWW_CPU.avg}             :icone "" :classe "cpu"    :titre "CPU")
+    (jauge :valeur {EWW_RAM.used_mem_perc}   :icone "" :classe "ram"    :titre "RAM")
+    (jauge :valeur {EWW_DISK["/"].used_perc} :icone "󰋊" :classe "disque" :titre "Disque")))
+
+(defwidget curseurs []
+  (box :class "carte" :orientation "v" :space-evenly false :spacing 12
+    (box :class "ligne volume" :space-evenly false :spacing 10
+      (button :class "icone-btn" :tooltip "Couper / rétablir le son"
+              :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+        (label :text {muet == "true" ? "󰝟" : "󰕾"}))
+      (scale :class "curseur" :hexpand true :min 0 :max 101
+             :value {volume == "" ? 0 : volume}
+             :onchange "pactl set-sink-volume @DEFAULT_SINK@ $(printf %.0f {})%")
+      (label :class "pourcent" :text "${volume}%"))
+    (box :class "ligne lumi" :visible {a_lumi == "true"} :space-evenly false :spacing 10
+      (label :class "icone-btn" :text "󰃠")
+      (scale :class "curseur" :hexpand true :min 1 :max 101
+             :value {lumi == "" ? 0 : lumi}
+             :onchange "brightnessctl set $(printf %.0f {})%")
+      (label :class "pourcent" :text "${lumi}%"))))
+
+(defwidget musique-carte []
+  (box :class "carte musique" :visible {musique.titre != ""}
+       :orientation "v" :space-evenly false :spacing 6
+    (label :class "titre"   :halign "start" :limit-width 34 :text {musique.titre})
+    (label :class "artiste" :halign "start" :limit-width 40 :text {musique.artiste})
+    (box :class "controles" :halign "center" :space-evenly false :spacing 22
+      (button :onclick "playerctl previous" (label :text "󰒮"))
+      (button :class "lecture" :onclick "playerctl play-pause"
+        (label :text {musique.statut == "Playing" ? "󰏤" : "󰐊"}))
+      (button :onclick "playerctl next" (label :text "󰒭")))))
+
+(defwidget alimentation []
+  (box :class "alimentation" :space-evenly true :spacing 10
+    (button :class "btn verrou" :tooltip "Verrouiller"
+            :onclick "eww close panneau; swaylock -f -i ~/.local/share/wallpapers/feels.png &"
+      (label :text "󰌾"))
+    (button :class "btn quitter" :tooltip "Se déconnecter"
+            :onclick "eww close panneau; swaynag -t warning -m 'Se déconnecter ?' -B 'Oui' 'swaymsg exit' &"
+      (label :text "󰍃"))
+    (button :class "btn redemarrer" :tooltip "Redémarrer"
+            :onclick "eww close panneau; swaynag -t warning -m 'Redémarrer ?' -B 'Oui' 'systemctl reboot' &"
+      (label :text "󰜉"))
+    (button :class "btn eteindre" :tooltip "Éteindre"
+            :onclick "eww close panneau; swaynag -t warning -m 'Éteindre ?' -B 'Oui' 'systemctl poweroff' &"
+      (label :text "󰐥"))))

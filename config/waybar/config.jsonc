@@ -1,0 +1,77 @@
+// ~/.config/waybar/config.jsonc  —  Waybar · palette « Feels »
+// Relancé automatiquement par Sway au reload (Super+Shift+C)
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 6,
+
+    "modules-left":   ["sway/workspaces", "sway/mode", "sway/window"],
+    "modules-center": ["clock"],
+    "modules-right":  ["pulseaudio", "network", "cpu", "memory", "backlight", "battery", "tray"],
+
+    // ─── Gauche ───
+    "sway/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": false,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "󰈹", "2": "", "3": "", "4": "󰭹", "5": "󰝚",
+            "urgent": "", "default": ""
+        }
+    },
+    "sway/mode": { "format": "󰩨 {}" },
+    "sway/window": { "max-length": 40, "rewrite": { "(.*) — Mozilla Firefox": "󰈹 $1" } },
+
+    // ─── Centre ───
+    "clock": {
+        "format": "󰥔  {:%H:%M}",
+        "on-click": "eww open --toggle panneau",
+        "locale": "fr_FR.UTF-8",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "weeks-pos": "left",
+            "format": {
+                "months":   "<span color='#e8894f'><b>{}</b></span>",
+                "weekdays": "<span color='#4fa8bd'><b>{}</b></span>",
+                "weeks":    "<span color='#5f7a8c'>S{}</span>",
+                "today":    "<span color='#4cc274'><b><u>{}</u></b></span>"
+            }
+        }
+    },
+
+    // ─── Droite ───
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": "󰝟 muet",
+        "format-icons": { "headphone": "󰋋", "default": ["󰕿", "󰖀", "󰕾"] },
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "scroll-step": 5
+    },
+    "network": {
+        "format-wifi": "󰤨 {signalStrength}%",
+        "format-ethernet": "󰈀 filaire",
+        "format-disconnected": "󰤭 hors ligne",
+        "tooltip-format": "{ifname} · {ipaddr}\n{essid}",
+        "on-click": "nm-connection-editor"
+    },
+    "cpu":    { "format": " {usage}%", "interval": 5 },
+    "memory": { "format": " {percentage}%", "interval": 10, "tooltip-format": "{used:0.1f} / {total:0.1f} Gio" },
+    "backlight": {
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"]
+    },
+    "battery": {
+        "states": { "warning": 25, "critical": 10 },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰁹"]
+    },
+    "tray": { "icon-size": 16, "spacing": 8 }
+}

@@ -1,0 +1,105 @@
+// ~/.config/eww/eww.scss — palette « Feels » (mêmes hex que sway/palette.conf)
+
+$bg:      #0e1726;
+$bg_dark: #0b0d1a;
+$bg_hl:   #1a2f42;
+$border:  #2a4556;
+$comment: #5f7a8c;
+$fg:      #dfe8ee;
+$fg_dark: #a8bcc8;
+$green:   #4cc274;
+$mint:    #9bc8ab;
+$blue:    #7393ea;
+$cyan:    #4fa8bd;
+$orange:  #e8894f;
+$red:     #e5654a;
+$yellow:  #f2c46b;
+$pink:    #e39a8a;
+
+* {
+  all: unset;
+  font-family: "Maple Mono NF";
+}
+
+// La fenêtre est transparente : seul le panneau a un fond (flouté par SwayFX)
+window { background-color: transparent; }
+
+tooltip {
+  background-color: $bg_dark;
+  border: 1px solid $green;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: $fg;
+}
+
+.panneau {
+  background-color: rgba($bg, 0.85);
+  border: 2px solid $green;
+  border-radius: 14px;
+  padding: 20px;
+  color: $fg;
+}
+
+// ── En-tête ──
+.heure { font-size: 48px; font-weight: bold; color: $fg; }
+.date  { font-size: 15px; color: $green; margin-top: -4px; }
+.info  { font-size: 12px; color: $comment; margin-top: 6px; }
+
+// ── Cartes ──
+.carte {
+  background-color: rgba($bg_hl, 0.65);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+// ── Jauges circulaires : color = arc, background-color = piste ──
+.cercle {
+  background-color: $bg_dark;
+  color: $green;
+}
+.ram    .cercle { color: $blue; }
+.disque .cercle { color: $orange; }
+.jauge-icone { font-size: 20px; color: $fg; }
+.jauge-titre { font-size: 12px; color: $fg_dark; }
+
+// ── Curseurs ──
+.icone-btn { font-size: 20px; color: $blue; min-width: 24px; }
+.lumi .icone-btn { color: $yellow; }
+.pourcent { font-size: 13px; color: $fg_dark; min-width: 42px; }
+
+scale trough {
+  background-color: $bg_dark;
+  border-radius: 6px;
+  min-height: 8px;
+  min-width: 200px;
+}
+scale highlight { background-color: $blue; border-radius: 6px; }
+.lumi scale highlight { background-color: $yellow; }
+scale slider {
+  background-color: $fg;
+  border-radius: 50%;
+  min-width: 14px;
+  min-height: 14px;
+  margin: -4px 0;
+}
+
+// ── Musique ──
+.musique .titre   { font-size: 15px; font-weight: bold; color: $fg; }
+.musique .artiste { font-size: 13px; color: $pink; }
+.controles { margin-top: 6px; font-size: 22px; color: $fg_dark; }
+.controles button:hover { color: $fg; }
+.controles .lecture { color: $green; font-size: 28px; }
+
+// ── Alimentation ──
+.btn {
+  background-color: rgba($bg_hl, 0.65);
+  border-radius: 12px;
+  padding: 12px 0;
+  font-size: 20px;
+  color: $fg_dark;
+}
+.btn:hover            { background-color: $border; }
+.verrou:hover         { color: $green; }
+.quitter:hover        { color: $blue; }
+.redemarrer:hover     { color: $orange; }
+.eteindre:hover       { color: $red; }

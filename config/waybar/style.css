@@ -1,0 +1,91 @@
+/* ~/.config/waybar/style.css  —  palette « Feels », modules en « pilules »
+   Barre transparente, pilules semi-opaques floutées par SwayFX. */
+
+/* ── Palette (identique à sway/palette.conf) ── */
+@define-color bg       #0e1726;
+@define-color bg_dark  #0b0d1a;
+@define-color bg_hl    #1a2f42;
+@define-color border   #2a4556;
+@define-color comment  #5f7a8c;
+@define-color fg       #dfe8ee;
+@define-color fg_dark  #a8bcc8;
+@define-color green    #4cc274;
+@define-color mint     #9bc8ab;
+@define-color blue     #7393ea;
+@define-color cyan     #4fa8bd;
+@define-color orange   #e8894f;
+@define-color red      #e5654a;
+@define-color yellow   #f2c46b;
+@define-color pink     #e39a8a;
+
+* {
+    font-family: "Maple Mono NF";
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 0;
+    border: none;
+    border-radius: 0;
+}
+
+window#waybar {
+    background: transparent;
+    color: @fg;
+}
+
+tooltip {
+    background: alpha(@bg_dark, 0.95);
+    border: 1px solid @green;
+    border-radius: 10px;
+}
+tooltip label { color: @fg; }
+
+/* ── Pilules ── */
+#workspaces, #mode, #window, #clock, #pulseaudio, #network,
+#cpu, #memory, #backlight, #battery, #tray {
+    background: alpha(@bg, 0.72);
+    border: 1px solid alpha(@border, 0.6);
+    border-radius: 10px;
+    padding: 0 12px;
+    margin: 2px 0;
+}
+
+window#waybar.empty #window { background: transparent; border-color: transparent; }
+
+/* ── Bureaux ── */
+#workspaces { padding: 0 4px; }
+#workspaces button {
+    color: @comment;
+    padding: 0 8px;
+    margin: 4px 2px;
+    border-radius: 7px;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+#workspaces button:hover   { background: @bg_hl; color: @fg; box-shadow: none; }
+#workspaces button.visible { color: @fg_dark; }
+#workspaces button.focused { background: @green;  color: @bg_dark; }
+#workspaces button.urgent  { background: @orange; color: @bg_dark; }
+
+#mode   { background: @orange; color: @bg_dark; }
+#window { color: @fg_dark; }
+
+/* ── Couleurs par module ── */
+#clock      { color: @orange; }
+#pulseaudio { color: @blue; }
+#pulseaudio.muted { color: @comment; }
+#network    { color: @cyan; }
+#network.disconnected { color: @red; }
+#cpu        { color: @green; }
+#memory     { color: @mint; }
+#backlight  { color: @yellow; }
+#battery    { color: @green; }
+#battery.charging, #battery.plugged { color: @mint; }
+#battery.warning:not(.charging)  { color: @orange; }
+#battery.critical:not(.charging) {
+    color: @bg_dark;
+    background: @red;
+    animation: clignote 1s steps(12) infinite alternate;
+}
+@keyframes clignote { to { background: alpha(@red, 0.4); } }
+
+#tray > .needs-attention { background: @orange; }

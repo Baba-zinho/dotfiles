@@ -1,0 +1,39 @@
+# ~/.config/mako/config  —  notifications · palette « Feels »
+# Recharger : makoctl reload
+# Attention : pas de commentaire en fin de ligne dans ce fichier.
+
+font=Maple Mono NF 11
+width=360
+height=160
+margin=12
+padding=14
+outer-margin=10
+border-size=2
+border-radius=12
+icons=1
+max-icon-size=48
+anchor=top-right
+layer=overlay
+max-visible=4
+default-timeout=5000
+format=<b>%s</b>\n%b
+
+# Fond semi-transparent (e0 = 88 %) : SwayFX le floute
+background-color=#0e1726e0
+text-color=#dfe8ee
+border-color=#4cc274
+progress-color=over #1a2f42
+
+[urgency=low]
+border-color=#2a4556
+text-color=#a8bcc8
+default-timeout=3000
+
+[urgency=critical]
+border-color=#e5654a
+default-timeout=0
+
+# Notifications de volume / luminosité éventuelles : bordure bleue
+[category=osd]
+border-color=#7393ea
+default-timeout=1500

@@ -1,0 +1,12 @@
+# ~/.config/swappy/config — éditeur d'annotation des captures (Meta+Maj+S)
+# Ctrl+S = enregistrer · Ctrl+C = copier · Échap = fermer
+[Default]
+save_dir=$HOME/Images/Captures
+save_filename_format=capture_%Y-%m-%d_%H-%M-%S.png
+show_panel=true
+line_size=5
+text_size=20
+text_font=Maple Mono NF
+paint_mode=brush
+early_exit=true
+fill_shape=false

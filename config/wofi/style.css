@@ -1,0 +1,55 @@
+/* ~/.config/wofi/style.css  —  palette « Feels » (mêmes hex que sway/palette.conf) */
+
+@define-color bg       #0e1726;
+@define-color bg_dark  #0b0d1a;
+@define-color bg_hl    #1a2f42;
+@define-color border   #2a4556;
+@define-color comment  #5f7a8c;
+@define-color fg       #dfe8ee;
+@define-color fg_dark  #a8bcc8;
+@define-color green    #4cc274;
+@define-color orange   #e8894f;
+
+* {
+    font-family: "Maple Mono NF";
+    font-size: 14px;
+}
+
+/* Fenêtre : fond semi-transparent, flouté par SwayFX (layer_effects "wofi") */
+window {
+    background-color: alpha(@bg, 0.85);
+    border: 2px solid @green;
+    border-radius: 12px;
+}
+
+#outer-box { margin: 14px; }
+
+/* Champ de recherche */
+#input {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border: 1px solid @border;
+    border-radius: 8px;
+    background-color: @bg_dark;
+    color: @fg;
+    box-shadow: none;
+}
+#input:focus { border-color: @green; }
+#input image { color: @comment; }
+
+#inner-box, #scroll { background: transparent; }
+
+/* Entrées */
+#entry {
+    padding: 6px 10px;
+    margin: 2px 0;
+    border-radius: 8px;
+}
+#entry #text  { color: @fg_dark; margin-left: 8px; }
+
+#entry:selected {
+    background-color: @bg_hl;
+    outline: none;
+    border-left: 3px solid @green;
+}
+#entry:selected #text { color: @green; font-weight: bold; }

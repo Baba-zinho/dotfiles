@@ -1,0 +1,100 @@
+# ~/.config/starship.toml  —  prompt Starship · palette « Feels »
+# Aperçu de la ligne :
+#    openSUSE   ~/projets/rice    main  !2 ?1    3s
+#  ❯
+"$schema" = 'https://starship.rs/config-schema.json'
+
+palette     = "feels"
+add_newline = true
+
+format = """
+$os\
+$directory\
+$git_branch\
+$git_status\
+$python\
+$nodejs\
+$rust\
+$golang\
+$cmd_duration\
+$line_break\
+$character"""
+
+# ── Palette centralisée (mêmes hex que sway/palette.conf) ──
+[palettes.feels]
+bg      = "#0e1726"
+bg_dark = "#0b0d1a"
+bg_hl   = "#1a2f42"
+border  = "#2a4556"
+comment = "#5f7a8c"
+fg      = "#dfe8ee"
+fg_dark = "#a8bcc8"
+green   = "#4cc274"
+mint    = "#9bc8ab"
+blue    = "#7393ea"
+cyan    = "#4fa8bd"
+orange  = "#e8894f"
+red     = "#e5654a"
+yellow  = "#f2c46b"
+pink    = "#e39a8a"
+
+# Chaque bloc est une « pilule » avec ses propres bords arrondis ( … ),
+# comme ça un module absent (pas de git, pas de Python…) ne casse rien.
+
+[os]
+disabled = false
+style    = "bg:green fg:bg_dark bold"
+format   = "[](fg:green)[$symbol]($style)[](fg:green) "
+
+[os.symbols]
+openSUSE = " "
+Linux    = " "
+
+[directory]
+style             = "bg:blue fg:bg_dark bold"
+read_only         = " 󰌾"
+read_only_style   = "bg:blue fg:red"
+truncation_length = 3
+truncation_symbol = "…/"
+home_symbol       = "~"
+format            = "[](fg:blue)[󰉋 $path]($style)[$read_only]($read_only_style)[](fg:blue) "
+
+[git_branch]
+symbol = " "
+style  = "bg:bg_hl fg:green"
+format = "[](fg:bg_hl)[$symbol$branch]($style)[](fg:bg_hl) "
+
+[git_status]
+style  = "fg:orange"
+format = "[$all_status$ahead_behind]($style) "
+# Symboles : ! modifié · + indexé · ? non suivi · ⇡ en avance · ⇣ en retard
+
+[python]
+symbol = " "
+style  = "fg:yellow"
+format = "[$symbol$version( \\($virtualenv\\))]($style) "
+
+[nodejs]
+symbol = " "
+style  = "fg:green"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = " "
+style  = "fg:orange"
+format = "[$symbol$version]($style) "
+
+[golang]
+symbol = " "
+style  = "fg:cyan"
+format = "[$symbol$version]($style) "
+
+[cmd_duration]
+min_time = 2000          # affiché si la commande a duré plus de 2 s
+style    = "fg:comment"
+format   = "[ $duration]($style) "
+
+[character]
+success_symbol           = "[❯](bold green)"
+error_symbol             = "[❯](bold red)"
+vimcmd_symbol            = "[❮](bold mint)"

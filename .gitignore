@@ -1,0 +1,5 @@
+# Fichiers créés par les applis, à ne pas versionner
+config/fish/fish_variables
+config/gtk-3.0/bookmarks
+config/eww/*.log
+*.bak*
