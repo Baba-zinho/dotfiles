@@ -3,20 +3,17 @@
 ;; Déboguer : eww logs   ·   Recharger : eww reload
 
 ;; ═════════════ Données ═════════════
-(defpoll heure    :interval "5s"  "date '+%H:%M'")
+(defpoll heure    :interval "1s" :initial "--:--" "date '+%H:%M'")
 (defpoll date_txt :interval "60s" "date '+%A %d %B'")
 (defpoll uptime   :interval "60s" "uptime -p | sed 's/^up //'")
 
-;; Son (LC_ALL=C : sortie de pactl en anglais, plus facile à lire)
-(defpoll volume :interval "1s"
-  "LC_ALL=C pactl get-sink-volume @DEFAULT_SINK@ 2>/dev/null | grep -o '[0-9]*%' | head -n1 | tr -d '%' || echo 0")
-(defpoll muet :interval "1s"
-  "LC_ALL=C pactl get-sink-mute @DEFAULT_SINK@ 2>/dev/null | grep -q yes && echo true || echo false")
+;; Son : mis à jour instantanément à chaque changement (pactl subscribe)
+(deflisten son :initial '{"niveau":0,"muet":false}' "~/.config/eww/scripts/volume.sh")
 
 ;; Luminosité (masquée s'il n'y a pas de rétroéclairage, ex. en VM ou sur un PC fixe)
 (defpoll a_lumi :interval "60s"
   "ls /sys/class/backlight 2>/dev/null | grep -q . && echo true || echo false")
-(defpoll lumi :interval "2s"
+(defpoll lumi :interval "500ms" :initial "0"
   "brightnessctl -m 2>/dev/null | cut -d, -f4 | tr -d '%' | grep . || echo 0")
 
 ;; Musique (n'importe quel lecteur compatible MPRIS : Spotify, Firefox, mpv…)
@@ -66,11 +63,11 @@
     (box :class "ligne volume" :space-evenly false :spacing 10
       (button :class "icone-btn" :tooltip "Couper / rétablir le son"
               :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
-        (label :text {muet == "true" ? "󰝟" : "󰕾"}))
+        (label :text {son.muet ? "󰝟" : "󰕾"}))
       (scale :class "curseur" :hexpand true :min 0 :max 101
-             :value {volume == "" ? 0 : volume}
+             :value {son.niveau}
              :onchange "pactl set-sink-volume @DEFAULT_SINK@ $(printf %.0f {})%")
-      (label :class "pourcent" :text "${volume}%"))
+      (label :class "pourcent" :text "${son.niveau}%"))
     (box :class "ligne lumi" :visible {a_lumi == "true"} :space-evenly false :spacing 10
       (label :class "icone-btn" :text "󰃠")
       (scale :class "curseur" :hexpand true :min 1 :max 101
