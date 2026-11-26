@@ -5,7 +5,7 @@
 ;; ═════════════ Données ═════════════
 (defpoll heure    :interval "1s" :initial "--:--" "date '+%H:%M'")
 (defpoll date_txt :interval "60s" "date '+%A %d %B'")
-(defpoll uptime   :interval "60s" "uptime -p | sed 's/^up //'")
+(defpoll uptime   :interval "60s" :initial "…" "awk '{printf \"%dh%02d\", $1/3600, ($1%3600)/60}' /proc/uptime")
 
 ;; Son : mis à jour instantanément à chaque changement (pactl subscribe)
 (deflisten son :initial '{"niveau":0,"muet":false}' "~/.config/eww/scripts/volume.sh")
@@ -13,8 +13,7 @@
 ;; Luminosité (masquée s'il n'y a pas de rétroéclairage, ex. en VM ou sur un PC fixe)
 (defpoll a_lumi :interval "60s"
   "ls /sys/class/backlight 2>/dev/null | grep -q . && echo true || echo false")
-(defpoll lumi :interval "500ms" :initial "0"
-  "brightnessctl -m 2>/dev/null | cut -d, -f4 | tr -d '%' | grep . || echo 0")
+(deflisten lumi :initial "0" "~/.config/eww/scripts/lumi.sh")
 
 ;; Musique (n'importe quel lecteur compatible MPRIS : Spotify, Firefox, mpv…)
 (deflisten musique :initial '{"statut":"","artiste":"","titre":""}'
@@ -72,7 +71,7 @@
       (label :class "icone-btn" :text "󰃠")
       (scale :class "curseur" :hexpand true :min 1 :max 101
              :value {lumi == "" ? 0 : lumi}
-             :onchange "brightnessctl set $(printf %.0f {})%")
+             :onchange "brightnessctl -q set $(printf %.0f {})%")
       (label :class "pourcent" :text "${lumi}%"))))
 
 (defwidget musique-carte []
