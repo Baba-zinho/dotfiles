@@ -57,8 +57,8 @@
 
 (defwidget jauges []
   (box :class "carte" :space-evenly true
-    (jauge :valeur {EWW_CPU.avg}             :icone "" :classe "cpu"    :titre "CPU")
-    (jauge :valeur {EWW_RAM.used_mem_perc}   :icone "" :classe "ram"    :titre "RAM")
+    (jauge :valeur {EWW_CPU.avg}             :icone "󰻠" :classe "cpu"    :titre "CPU")
+    (jauge :valeur {EWW_RAM.used_mem_perc}   :icone "󰍛" :classe "ram"    :titre "RAM")
     (jauge :valeur {EWW_DISK["/"].used_perc} :icone "󰋊" :classe "disque" :titre "Disque")))
 
 (defwidget curseurs []

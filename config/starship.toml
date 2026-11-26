@@ -44,11 +44,12 @@ pink    = "#e39a8a"
 [os]
 disabled = false
 style    = "bg:green fg:bg_dark bold"
-format   = "[](fg:green)[$symbol]($style)[](fg:green) "
+format   = "[](fg:green)[$symbol]($style)[](fg:green) "
 
 [os.symbols]
-openSUSE = " "
-Linux    = " "
+openSUSE = " "
+SUSE     = " "
+Linux    = " "
 
 [directory]
 style             = "bg:blue fg:bg_dark bold"
@@ -57,12 +58,12 @@ read_only_style   = "bg:blue fg:red"
 truncation_length = 3
 truncation_symbol = "…/"
 home_symbol       = "~"
-format            = "[](fg:blue)[󰉋 $path]($style)[$read_only]($read_only_style)[](fg:blue) "
+format            = "[](fg:blue)[󰉋 $path]($style)[$read_only]($read_only_style)[](fg:blue) "
 
 [git_branch]
-symbol = " "
+symbol = " "
 style  = "bg:bg_hl fg:green"
-format = "[](fg:bg_hl)[$symbol$branch]($style)[](fg:bg_hl) "
+format = "[](fg:bg_hl)[$symbol$branch]($style)[](fg:bg_hl) "
 
 [git_status]
 style  = "fg:orange"
@@ -70,29 +71,29 @@ format = "[$all_status$ahead_behind]($style) "
 # Symboles : ! modifié · + indexé · ? non suivi · ⇡ en avance · ⇣ en retard
 
 [python]
-symbol = " "
+symbol = " "
 style  = "fg:yellow"
 format = "[$symbol$version( \\($virtualenv\\))]($style) "
 
 [nodejs]
-symbol = " "
+symbol = " "
 style  = "fg:green"
 format = "[$symbol$version]($style) "
 
 [rust]
-symbol = " "
+symbol = " "
 style  = "fg:orange"
 format = "[$symbol$version]($style) "
 
 [golang]
-symbol = " "
+symbol = " "
 style  = "fg:cyan"
 format = "[$symbol$version]($style) "
 
 [cmd_duration]
 min_time = 2000          # affiché si la commande a duré plus de 2 s
 style    = "fg:comment"
-format   = "[ $duration]($style) "
+format   = "[󰔟 $duration]($style) "
 
 [character]
 success_symbol           = "[❯](bold green)"

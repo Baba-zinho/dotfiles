@@ -19,8 +19,8 @@
         "all-outputs": false,
         "format": "{icon}",
         "format-icons": {
-            "1": "󰈹", "2": "", "3": "", "4": "󰭹", "5": "󰝚",
-            "urgent": "", "default": ""
+            "1": "󰈹", "2": "", "3": "", "4": "󰭹", "5": "󰝚",
+            "urgent": "", "default": ""
         }
     },
     "sway/mode": { "format": "󰩨 {}" },
@@ -60,8 +60,8 @@
         "tooltip-format": "{ifname} · {ipaddr}\n{essid}",
         "on-click": "nm-connection-editor"
     },
-    "cpu":    { "format": " {usage}%", "interval": 5 },
-    "memory": { "format": " {percentage}%", "interval": 10, "tooltip-format": "{used:0.1f} / {total:0.1f} Gio" },
+    "cpu":    { "format": "󰻠 {usage}%", "interval": 5 },
+    "memory": { "format": "󰍛 {percentage}%", "interval": 10, "tooltip-format": "{used:0.1f} / {total:0.1f} Gio" },
     "backlight": {
         "format": "{icon} {percent}%",
         "format-icons": ["󰃞", "󰃟", "󰃠"]
