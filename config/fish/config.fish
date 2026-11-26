@@ -64,3 +64,4 @@ end
 # Variables d'environnement (valables aussi en mode non interactif)
 set -gx EDITOR nano          # on passera à nvim quand on fera Neovim
 fish_add_path -g ~/.local/bin
+set -e SSH_ASKPASS
